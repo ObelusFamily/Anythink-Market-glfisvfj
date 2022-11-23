@@ -43,6 +43,8 @@ class ItemsController < ApplicationController
   def feed
     @items = Item.includes(:user).where(user: current_user.following_users)
 
+    @item = @items.where(title: item_params.title) if item_params.title.present?
+
     @items_count = @items.count
 
     @items = @items.order(created_at: :desc).offset(params[:offset] || 0).limit(params[:limit] || 20)
